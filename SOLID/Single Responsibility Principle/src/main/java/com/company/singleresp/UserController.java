@@ -9,25 +9,34 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 //Handles incoming JSON requests that work on User resource/entity
 public class UserController {
 	//Store used by controller
-    private Store store = new Store();
+    //private Store store = new Store();
+    private UserPersistenceService userService = new UserPersistenceService();
     
     //Create a new user
     public String createUser(String userJson) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
+        UserPersistenceService userService = new UserPersistenceService();
         
         User user = mapper.readValue(userJson, User.class);
 
-        if(!isValidUser(user)) {
+        UserValidator userValidator = new UserValidator();
+        boolean isUserValid = userValidator.validateUser(user);
+
+/*        if(!isValidUser) {
+            return "ERROR";
+        }*/
+        if(!isUserValid) {
             return "ERROR";
         }
 
-        store.store(user);
+        //store.store(user);
+        userService.saveUser(user);
         
         return "SUCCESS";
-    } 
+    }
 
     //Validates the user object
-    private boolean isValidUser(User user) {
+/*    private boolean isValidUser(User user) {
         if(!isPresent(user.getName())) {
             return false;
         }
@@ -45,23 +54,24 @@ public class UserController {
         }
         return true;
     }
-    
+
     //Simply checks if value is null or empty..
     private boolean isPresent(String value) {
         return value != null && value.trim().length() > 0;
     }
     //check string for special characters
     private boolean isValidAlphaNumeric(String value) {
-        Pattern pattern = Pattern.compile("[^A-Za-z0-9]"); 
+        Pattern pattern = Pattern.compile("[^A-Za-z0-9]");
         Matcher matcher = pattern.matcher(value);
         return !matcher.find();
     }
-    //check string for valid email address - this is not for prod. 
+    //check string for valid email address - this is not for prod.
     //Just for demo. This fails for lots of valid emails.
     private boolean isValidEmail(String value) {
-        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"); 
+        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
         Matcher matcher = pattern.matcher(value);
         return matcher.find();
     }
+*/
 
 }
