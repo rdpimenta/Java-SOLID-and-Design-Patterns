@@ -12,7 +12,7 @@ public class Main {
 		
 		useRectangle(rectangle);
 		
-		useRectangle(square);
+		useSquare(square);
 
 	}
 
@@ -21,5 +21,10 @@ public class Main {
 		rectangle.setWidth(30);
 		assert rectangle.getHeight() == 20 : "Height Not equal to 20";
 		assert rectangle.getWidth() == 30 : "Width Not equal to 30";
+	}
+
+	private static void useSquare(Square square) {
+		square.setSide(20);
+		assert square.getSide() == 20 : "Side Not equal to 20";
 	}
 }
